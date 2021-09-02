@@ -72,6 +72,21 @@
         app:layout_constraintVertical_bias="0.869" />
 
     <Button
+        android:id="@+id/buttonSRoot"
+        android:layout_width="93dp"
+        android:layout_height="43dp"
+        android:background="#AFFFF8"
+        android:backgroundTint="#848C8B"
+        android:onClick="onClickSRoot"
+        android:text="√"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.972" />
+
+    <Button
         android:id="@+id/buttonSubt"
         android:layout_width="93dp"
         android:layout_height="43dp"
@@ -299,6 +314,7 @@
         android:onClick="onClickButtonZero"
         android:text="0"
         android:textSize="20sp"
+        app:iconTint="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

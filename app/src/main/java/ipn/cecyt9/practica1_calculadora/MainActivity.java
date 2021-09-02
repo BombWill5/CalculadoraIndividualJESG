@@ -14,8 +14,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
-    Double numero1,numero2,resultado;
-    String operador;
+    String cadNum = ".1234567890";
+    String num1 = "";
+    String num2 = "";
+    Double dNum1, dNum2, resultado;
+    String sResultado;
+    String operacion;
+    char operador = ' ';
+    int operPos = 0;
     boolean restriction = false;
 
     public void onClickButtonOne(View miView) {
@@ -88,6 +94,10 @@ public class MainActivity extends AppCompatActivity {
         String value = tv.getText().toString();
         int prevSize = value.length() - 1;
         String value2 = "";
+        if(operador == 's' || operador == 'c' || operador == 't' || operador == 'r')
+        {
+            operador = ' ';
+        }
         if (value.length() <= 1) {
             tv.setText("");
         } else {
@@ -98,38 +108,29 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void onClickOperacionCapturaNumero1(View miView) {
-        TextView tv = findViewById(R.id.textView);
-        numero1 = Double.parseDouble(tv.getText().toString());
-        tv.setText("");
-    }
 
     public void onClickSum(View miView) {
-        operador = "+";
-        onClickOperacionCapturaNumero1(miView);
+        TextView tv = findViewById(R.id.textView);
+        String value = tv.getText().toString();
+        tv.setText(value + "+");
     }
 
     public void onClickSubt(View miView) {
         TextView tv = findViewById(R.id.textView);
         String value = tv.getText().toString();
-        if(value == "")
-        {
-            tv.setText("-");
-        }
-        else {
-            operador = "-";
-            onClickOperacionCapturaNumero1(miView);
-        }
+        tv.setText(value + "-");
     }
 
     public void onClickMulti(View miView) {
-        operador = "*";
-        onClickOperacionCapturaNumero1(miView);
+        TextView tv = findViewById(R.id.textView);
+        String value = tv.getText().toString();
+        tv.setText(value + "x");
     }
 
     public void onClickDivi(View miView) {
-        operador = "/";
-        onClickOperacionCapturaNumero1(miView);
+        TextView tv = findViewById(R.id.textView);
+        String value = tv.getText().toString();
+        tv.setText(value + "÷");
     }
 
     public void onClickDot(View miView) {
@@ -138,82 +139,164 @@ public class MainActivity extends AppCompatActivity {
         tv.setText(value + ".");
     }
 
-    public void onClickSin(View miView) {
-        onClickOperacionCapturaNumero1(miView);
-        TextView tv = (TextView) findViewById(R.id.textView);
-        double rad = Math.toRadians(numero1);
-        resultado = Math.sin(rad);
-        tv.setText(resultado.toString());
+    public void onClickSin(View miView) { ;
+        TextView tv = findViewById(R.id.textView);
+        tv.setText("Sin");
+        operador = 's';
     }
 
     public void onClickCos(View miView) {
-        onClickOperacionCapturaNumero1(miView);
-        TextView tv = (TextView) findViewById(R.id.textView);
-        if(numero1 == 90)
-        {
-            tv.setText("0");
-        }
-        else {
-            double rad = Math.toRadians(numero1);
-            resultado = Math.cos(rad);
-            tv.setText(resultado.toString());
-        }
+        TextView tv = findViewById(R.id.textView);
+        tv.setText("Cos");
+        operador = 'c';
+    }
+    public void onClickSRoot(View miView) {
+        TextView tv = findViewById(R.id.textView);
+        tv.setText("√");
+        operador = 'r';
     }
 
     public void onClickTan(View miView) {
-        onClickOperacionCapturaNumero1(miView);
-        TextView tv = (TextView) findViewById(R.id.textView);
-        if(numero1 == 90)
-        {
-            tv.setText("∞");
+        TextView tv = findViewById(R.id.textView);
+        tv.setText("Tan");
+        operador = 't';
         }
-        else {
-            double rad = Math.toRadians(numero1);
-            resultado = Math.tan(rad);
-            tv.setText(resultado.toString());
-        }
-    }
+
 
     public void onClickEquals(View miView) {
-        TextView tv = (TextView) findViewById(R.id.textView);
-        numero2 = Double.parseDouble(tv.getText().toString());
-        try{
-            if(operador.equals("+")){
-                resultado = numero1 + numero2;
-            }
-            else
-                if(operador.equals("-"))
-                {
-                    resultado = numero1 - numero2;
+        TextView tv = findViewById(R.id.textView);
+        operacion = tv.getText().toString();
+        if (operador == ' ') {
+            for (int i = 0; i < operacion.length(); i++) {
+                if (i == 0 && operacion.charAt(i) == '-') {
+                    num1 = num1 + operacion.charAt(i);
                 }
-                else
-                    if(operador.equals("*"))
-                    {
-                        resultado = numero1 * numero2;
+                for (int j = 0; j < cadNum.length(); j++) {
+                    if (operacion.charAt(i) == cadNum.charAt(j)) {
+                        num1 = num1 + operacion.charAt(i);
                     }
-                    else
-                        if(operador.equals("/"))
-                        {
-                            if(numero2 == 0)
-                            {
-                                restriction = true;
-                            }
-                            else {
-                                resultado = numero1 / numero2;
-                            }
-                        }
 
-            if(restriction == true)
+                    if ((operacion.charAt(i) == 'x') || (operacion.charAt(i) == '+') || (operacion.charAt(i) == '-' && i != 0) || (operacion.charAt(i) == '÷')) {
+                        operador = operacion.charAt(i);
+                        operPos = i;
+                        break;
+                    }
+                }
+                if (operador == 'x' || operador == '+' || operador == '-' || operador == '÷') {
+                    break;
+                }
+            }
+            for (int i = operPos + 1; i < operacion.length(); i++) {
+                num2 = num2 + operacion.charAt(i);
+            }
+            dNum1 = Double.parseDouble(num1);
+            dNum2 = Double.parseDouble(num2);
+            if (operador == 'x') {
+                resultado = dNum1 * dNum2;
+            }
+
+            if (operador == '+') {
+                resultado = dNum1 + dNum2;
+            }
+
+            if (operador == '-') {
+                resultado = dNum1 - dNum2;
+            }
+
+            if (operador == '÷') {
+                resultado = dNum1 / dNum2;
+            }
+            sResultado = resultado.toString();
+            if(dNum2 == 0.0)
             {
                 tv.setText("Indeterminado");
-                restriction = false;
             }
             else {
-                tv.setText(resultado.toString());
+                tv.setText(sResultado);
             }
-        }catch(NumberFormatException nfe){
-            Toast.makeText(this, "Numero incorrecto", Toast.LENGTH_SHORT).show();
+            num1 = "";
+            num2 = "";
+            dNum1 = 0.0;
+            dNum2 = 0.0;
+            operador = ' ';
+            resultado = 0.0;
+            operacion = "";
+            sResultado = "";
+            operPos = 0;
+        } else {
+            if (operador == 's') {
+                for (int i = 3; i < operacion.length(); i++) {
+                    num1 = num1 + operacion.charAt(i);
+                }
+                dNum1 = Double.parseDouble(num1);
+                double rad = Math.toRadians(dNum1);
+                resultado = Math.sin(rad);
+                sResultado = resultado.toString();
+                tv.setText(sResultado);
+                num1 = "";
+                dNum1 = 0.0;
+                operador = ' ';
+                resultado = 0.0;
+                operacion = "";
+                sResultado = "";
+            }
+            if (operador == 'c') {
+                for (int i = 3; i < operacion.length(); i++) {
+                    num1 = num1 + operacion.charAt(i);
+                }
+                dNum1 = Double.parseDouble(num1);
+                double rad = Math.toRadians(dNum1);
+                resultado = Math.cos(rad);
+                sResultado = resultado.toString();
+                if(dNum1 == 90.0){
+                    tv.setText("0.0");
+                }
+                else {
+                    tv.setText(sResultado);
+                }
+                num1 = "";
+                dNum1 = 0.0;
+                operador = ' ';
+                resultado = 0.0;
+                operacion = "";
+                sResultado = "";
+            }
+            if (operador == 't') {
+                for (int i = 3; i < operacion.length(); i++) {
+                    num1 = num1 + operacion.charAt(i);
+                }
+                dNum1 = Double.parseDouble(num1);
+                double rad = Math.toRadians(dNum1);
+                resultado = Math.tan(rad);
+                sResultado = resultado.toString();
+                if(dNum1 == 90.0){
+                    tv.setText("∞");
+                }
+                else {
+                    tv.setText(sResultado);
+                }
+                num1 = "";
+                dNum1 = 0.0;
+                operador = ' ';
+                resultado = 0.0;
+                operacion = "";
+                sResultado = "";
+            }
+            if (operador == 'r') {
+                for (int i = 1; i < operacion.length(); i++) {
+                    num1 = num1 + operacion.charAt(i);
+                }
+                dNum1 = Double.parseDouble(num1);
+                resultado = Math.sqrt(dNum1);
+                sResultado = resultado.toString();
+                tv.setText(sResultado);
+                num1 = "";
+                dNum1 = 0.0;
+                operador = ' ';
+                resultado = 0.0;
+                operacion = "";
+                sResultado = "";
+            }
         }
     }
-
 }
